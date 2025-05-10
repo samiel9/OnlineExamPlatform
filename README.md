@@ -16,6 +16,37 @@ The Online Exam Platform is a web-based application designed to facilitate the c
 - **Responsive Design**:
   - Optimized for both desktop and mobile devices.
 
+## Use Cases
+
+This section outlines common user interactions and the features available in the Online Exam Platform.
+
+### Teacher Use Cases
+- **Register and Login**: Create a teacher account or log in to access the platform.
+- **Create Exam**: Set up a new exam with title, description, and settings (duration, visibility).
+- **Add Questions**: Add various question types (multiple-choice, true/false, short answer) to an exam.
+- **Edit Questions**: Modify existing questions or update question details.
+- **Delete Questions**: Remove questions from an exam.
+- **Publish Exam**: Make an exam available to students.
+- **View Submissions**: See student submissions and answers for a given exam.
+- **Grade Exam**: Manually grade short-answer or essay responses.
+- **View Results**: Review scores and analytics for individual students or the entire class.
+- **Manage Profile**: Update profile information and change password.
+
+### Student Use Cases
+- **Register and Login**: Create a student account or log in to the platform.
+- **Browse Available Exams**: View a list of exams published by teachers.
+- **Start Exam**: Begin an exam within the specified time limit.
+- **Submit Answers**: Answer questions and submit the completed exam.
+- **Auto-Graded Results**: View immediate scores for auto-gradable question types (e.g., multiple-choice).
+- **View Detailed Feedback**: For graded exams, see correct answers and feedback on each question.
+- **View Past Results**: Access historical exam results and performance analytics.
+- **Manage Profile**: Update personal information and change password.
+
+### Shared Use Cases
+- **Authentication & Authorization**: Secure access with role-based permissions (teacher vs. student).
+- **Responsive Interface**: Access the platform on desktop and mobile devices.
+- **Dark/Light Theme**: Toggle between themes (if enabled in settings).
+
 ## Project Structure
 The project is divided into two main parts:
 
