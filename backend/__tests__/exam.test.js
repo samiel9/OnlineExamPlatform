@@ -177,7 +177,8 @@ describe('Exam API', () => {
         type: 'direct',
         duration: 60,
         score: 5,
-        answer: '4'
+        answer: '4',
+        tolerance: 0.5 // Added tolerance
       };
       const res = await request(app)
         .post(`/api/exams/${examId}/questions`)
@@ -187,6 +188,8 @@ describe('Exam API', () => {
       expect(res.body).toHaveProperty('_id');
       expect(res.body.text).toBe('What is 2+2?');
       expect(res.body.type).toBe('direct');
+      expect(res.body.answer).toBe('4');
+      expect(res.body.tolerance).toBe(0.5); // Assert tolerance
 
       // Verify the question is added to the exam
       const examRes = await request(app).get(`/api/exams/${examId}`).set('x-auth-token', token);
@@ -219,7 +222,7 @@ describe('Exam API', () => {
       const addRes = await request(app)
         .post(`/api/exams/${examId}/questions`)
         .set('x-auth-token', token)
-        .send({ text: 'Old text', type: 'direct', duration: 30, score: 2, answer: 'Old answer' });
+        .send({ text: 'Old text', type: 'direct', duration: 30, score: 2, answer: 'Old answer', tolerance: 0.1 }); // Added initial tolerance
       const questionId = addRes.body._id;
 
       const updatedData = {
@@ -227,7 +230,8 @@ describe('Exam API', () => {
         type: 'direct',
         duration: 45,
         score: 3,
-        answer: 'New answer'
+        answer: 'New answer',
+        tolerance: 0.8 // Updated tolerance
       };
       const res = await request(app)
         .put(`/api/exams/questions/${questionId}`)
@@ -238,6 +242,7 @@ describe('Exam API', () => {
       expect(res.body.duration).toBe(45);
       expect(res.body.score).toBe(3);
       expect(res.body.answer).toBe('New answer');
+      expect(res.body.tolerance).toBe(0.8); // Assert updated tolerance
     });
 
     it('should delete a question', async () => {
