@@ -89,17 +89,11 @@ The project is divided into two main parts:
     ```
     This command will run `npm install` in both the `backend` and `frontend` directories.
 
-3.  **Environment Variables**:
-    The backend requires a `JWT_SECRET` for token generation. A `.env` file is needed in the `OnlineExamPlatform` root directory (it will be used by `docker-compose.yml`).
-    Create a `.env` file in the project root:
-    ```
-    OnlineExamPlatform/.env
-    ```
-    Add your secret:
-    ```env
-    JWT_SECRET=your_super_strong_and_unique_jwt_secret
-    ```
-    Replace `your_super_strong_and_unique_jwt_secret` with a strong, unique secret. You can generate one using `openssl rand -hex 32`.
+3.  **Environment Variables (auto-generated)**:
+    When you run `make install-deps` or `make full-cycle`, the Makefile will auto-create any missing environment files:
+    -  `./.env` with a randomly generated `JWT_SECRET` if it does not exist.
+    -  `frontend/.env.development` with `PUBLIC_URL=.` if it does not exist.
+    You can optionally override the `JWT_SECRET` by editing `./.env`.
 
 ## Development
 
