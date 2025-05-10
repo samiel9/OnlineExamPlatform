@@ -10,7 +10,8 @@ SHELL := /bin/bash
         build-services build-backend-image build-frontend-image \\
         start stop restart logs ps \\
         deploy-frontend \\
-        clean clean-docker clean-build clean-node-modules
+        clean clean-docker clean-build clean-node-modules \\
+        full-cycle
 
 # Default target: Build Docker services and start them
 all: build-services start
@@ -22,6 +23,10 @@ install-deps:
 	@echo "Installing frontend dependencies..."
 	@cd frontend && npm install
 	@echo "Dependencies installed."
+
+# Full Cycle: Install, Test, Build Docker services and Start them
+full-cycle: install-deps test all
+	@echo "Full cycle completed: Dependencies installed, tests passed, Docker services built and started."
 
 # Development (running services locally without Docker for dev)
 dev-backend:
