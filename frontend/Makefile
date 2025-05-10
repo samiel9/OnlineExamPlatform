@@ -1,3 +1,6 @@
-test-frontend:
-	@echo "Running frontend tests..."
-	@cd frontend && npm install && CI=true npm test -- --watchAll=false
+.PHONY: deploy
+
+# Deploy to GitHub Pages (includes build via npm's predeploy script in package.json)
+deploy:
+	@echo "Deploying frontend to GitHub Pages..."
+	@npm run deploy
