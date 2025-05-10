@@ -10,8 +10,13 @@ all: build-services start
 
 # Dependency Installation
 install-deps:
-	@bash -c 'if [ ! -f .env ]; then echo "Creating root .env with random JWT_SECRET..."; echo "JWT_SECRET=$(openssl rand -hex 32)" > .env; fi'
-	@bash -c 'if [ ! -f frontend/.env.development ]; then echo "Creating frontend/.env.development with PUBLIC_URL=. ..."; echo "PUBLIC_URL=." > frontend/.env.development; fi'
+	@echo "Checking for bash to auto-generate .env files..."
+	@if command -v bash >/dev/null 2>&1; then \
+		bash -c 'if [ ! -f .env ]; then echo "Creating root .env with random JWT_SECRET..."; echo "JWT_SECRET=$(openssl rand -hex 32)" > .env; fi'; \
+		bash -c 'if [ ! -f frontend/.env.development ]; then echo "Creating frontend/.env.development with PUBLIC_URL=. ..."; echo "PUBLIC_URL=." > frontend/.env.development; fi'; \
+	else \
+		echo "bash not found. Please create './.env' with JWT_SECRET and 'frontend/.env.development' with PUBLIC_URL=. manually before continuing."; \
+	fi
 	@echo "Installing backend dependencies..."
 	@cd backend && npm install
 	@echo "Installing frontend dependencies..."
