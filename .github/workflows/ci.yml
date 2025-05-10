@@ -7,48 +7,65 @@ on:
     branches: [ main ]
 
 jobs:
-  backend-test:
-    name: Backend Tests
+  install-dependencies:
+    name: Install Dependencies
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
+          node-version: '18' # Or your project\'s node version
+      - name: Install All Dependencies via Makefile
+        run: make install-deps
+
+  backend-test:
+    name: Backend Tests
+    runs-on: ubuntu-latest
+    needs: install-dependencies # Depends on successful dependency installation
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
           node-version: '18'
-      - name: Install Backend Dependencies
+      # Dependencies are assumed to be installed by the \'install-dependencies\' job if using a shared workspace or artifacts.
+      # If jobs run on fresh VMs each time, you might need to repeat npm install or pass artifacts.
+      # For simplicity here, we assume checkout brings the installed node_modules if install-dependencies ran on the same runner type or passed artifacts.
+      # A more robust way is to cache node_modules or pass them as artifacts.
+      # However, make install-deps should have populated them if run in the same checkout.
+      # Let's ensure backend dependencies are present for this job specifically if not using artifacts.
+      - name: Install Backend Dependencies (fallback if not cached/passed)
         working-directory: ./backend
         run: npm install
-      - name: Run Backend Tests
-        working-directory: ./backend
-        run: npm test
+      - name: Run Backend Tests via Makefile
+        run: make test-backend
 
   frontend-test:
     name: Frontend Tests
     runs-on: ubuntu-latest
-    needs: backend-test
+    needs: install-dependencies # Depends on successful dependency installation
     steps:
       - uses: actions/checkout@v3
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-      - name: Install Frontend Dependencies
+      # Similar to backend, ensuring frontend dependencies.
+      - name: Install Frontend Dependencies (fallback if not cached/passed)
         working-directory: ./frontend
         run: npm install
-      - name: Run Frontend Tests
-        working-directory: ./frontend
+      - name: Run Frontend Tests via Makefile
         env:
-          CI: true
-        run: npm test -- --watchAll=false
+          CI: true # Often needed for React tests
+        run: make test-frontend
 
   docker-build:
     name: Build Docker Images
     runs-on: ubuntu-latest
-    needs: [backend-test, frontend-test]
+    needs: [backend-test, frontend-test] # Depends on successful tests
     steps:
       - uses: actions/checkout@v3
-      - name: Build Backend Image
-        run: docker build -f backend/Dockerfile -t onlineexamplatform-backend:latest backend
-      - name: Build Frontend Image
-        run: docker build -f frontend/Dockerfile -t onlineexamplatform-frontend:latest frontend
+      # Docker build commands in Makefile assume Docker is available on the runner
+      - name: Build Docker Services via Makefile
+        run: make build-services
