@@ -3,15 +3,7 @@
 SHELL := /bin/bash
 .DEFAULT_GOAL := all
 
-.PHONY: all \\
-        install-deps \\
-        dev-backend dev-frontend \\
-        test test-backend test-frontend \\
-        build-services build-backend-image build-frontend-image \\
-        start stop restart logs ps \\
-        deploy-frontend \\
-        clean clean-docker clean-build clean-node-modules \\
-        full-cycle
+.PHONY: all install-deps dev-backend dev-frontend test test-backend test-frontend build-services build-backend-image build-frontend-image start stop restart logs ps deploy-frontend clean clean-docker clean-build clean-node-modules full-cycle
 
 # Default target: Build Docker services and start them
 all: build-services start

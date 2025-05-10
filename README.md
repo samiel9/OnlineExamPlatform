@@ -200,6 +200,7 @@ The `Makefile` in the project root provides several useful commands:
 -   `make clean-docker`: Stops Docker containers and removes images built by compose.
 -   `make clean-build`: Removes the `frontend/build` directory.
 -   `make clean-node-modules`: Removes `node_modules` from both backend and frontend.
+-   `make full-cycle`: Installs dependencies, runs all tests, builds Docker services, and starts them in one command.
 
 ## Contributing
 Contributions are welcome! Please follow these steps:
